@@ -1,11 +1,5 @@
 <?php
 
-class GithubReceiverController extends GithubReceiverAppController {
+class GithubReceiverAppController extends AppController {
 	var $components = array("RequestHandler");
-	
-	function receive() {
-		if ($this->RequestHandler->isPost() && !empty($this->data["payload"])) {
-		}
-		exit;
-	}
 }
