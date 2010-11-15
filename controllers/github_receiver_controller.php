@@ -4,8 +4,8 @@
 	$example = array(
 		'filters' => array(
 			'filtername' => array(
-				'branches' => array(), // act if the branches are included
-				'url' => "", // act if the url is same
+				'branches' => array("refs/heads/master"), // act if the branches are included
+				'url' => "http://github.com/monsat/github_receiver", // act if the url is same
 			),
 		),
 	);
@@ -22,12 +22,14 @@ class GithubReceiverController extends GithubReceiverAppController {
 		'filters' => array(),
 	);
 	var $is_act = true;
+	var $post;
 	var $payload;
 	var $fileter_name;
 	var $fileter;
 	var $is_post = false;
 	
 	function beforeFilter() {
+		$this->post = isset($_POST['payload']) ? $_POST['payload'] : null;
 	}
 	function receive() {
 		$this->autoRender = false;
@@ -66,7 +68,7 @@ class GithubReceiverController extends GithubReceiverAppController {
 			),
 		);
 		Configure::write('GithubReceiver', $tmp);
-		$_POST['payload'] = json_encode(
+		$this->post = json_encode(
 			array(
 				'repository' => array('url' => "http://github.com/monsat/github_receiver"),
 				'ref' => "refs/heads/master",
@@ -82,12 +84,14 @@ class GithubReceiverController extends GithubReceiverAppController {
 	}
 	
 	function _isPostFromGithub() {
-		return $this->_isPost() && !empty($_POST['payload']);
+		return $this->_isPost() && !empty($this->post);
 	}
 	
-	function _loadPayload($post = array('payload' => array())) {
-		$post = !empty($_POST['payload']) ? $_POST['payload'] : $post;
-		return $this->payload = json_decode($post);
+	function _loadPayload() {
+		if (empty($this->post)) {
+			return false;
+		}
+		return $this->payload = json_decode($this->post);
 	}
 	
 	function _setDefaults() {
@@ -120,7 +124,7 @@ class GithubReceiverController extends GithubReceiverAppController {
 	}
 	function _putFile() {
 		$fullpath = $this->_filepath($this->settings['filename']);
-		return file_put_contents($fullpath, $_POST['payload']);
+		return file_put_contents($fullpath, $this->post);
 	}
 	
 	
