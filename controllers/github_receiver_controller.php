@@ -31,7 +31,7 @@ class GithubReceiverController extends GithubReceiverAppController {
 	}
 	function receive() {
 		$this->autoRender = false;
-		if (false && !$this->_isPostFromGithub()) {
+		if (!$this->_isPostFromGithub()) {
 			return false;
 		}
 		$this->_loadPayload();
@@ -82,7 +82,7 @@ class GithubReceiverController extends GithubReceiverAppController {
 	}
 	
 	function _isPostFromGithub() {
-		return !$this->_isPost() || empty($_POST['payload']);
+		return $this->_isPost() && !empty($_POST['payload']);
 	}
 	
 	function _loadPayload($post = array('payload' => array())) {

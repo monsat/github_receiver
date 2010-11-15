@@ -17,6 +17,19 @@ class TestGithubReceiverController extends CakeTestCase {
 		unset($this->GithubReceiverController);
 		Configure::delete('GithubReceiver');
 	}
+	// _isPost()
+	function testInternalIsPost(){
+		// $is_post is true
+		$this->GithubReceiverController->is_post = true;
+		$this->assertTrue($this->GithubReceiverController->_isPost());
+	}
+	// _isPostFromGithub()
+	function testInternalIsPostFromGithub(){
+		// $is_post is true
+		$this->GithubReceiverController->is_post = true;
+		$_POST['payload'] = "test";
+		$this->assertTrue($this->GithubReceiverController->_isPostFromGithub());
+	}
 	// _check()
 	function testInternalCheck(){
 		$this->assertTrue($this->GithubReceiverController->_check(true, ""));
