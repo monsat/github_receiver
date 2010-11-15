@@ -18,8 +18,7 @@ class GithubReceiverController extends GithubReceiverAppController {
 		'cache_dir' => CACHE,
 		'is_log' => true,
 		'prefix' => "github_",
-		'prepare_filename' => "pull_prepare",
-		'ready_filename' => "pull_ready",
+		'filename' => "pull",
 		'filters' => array(),
 	);
 	var $is_act = true;
@@ -47,9 +46,8 @@ class GithubReceiverController extends GithubReceiverAppController {
 				$this->is_act = true;
 				$this->_checkBranches();
 				$this->_checkUrl();
-				// Act if the ready file is *not* exists
-				if ($this->is_act && !$this->_isReadyFileExists()) {
-					$this->_putPrepareFile();
+				if ($this->is_act) {
+					$this->_putFile();
 				}
 			}
 			return true;
@@ -120,12 +118,8 @@ class GithubReceiverController extends GithubReceiverAppController {
 			"This Github Repository is denied.<br />If you want to accept this github repository, <br />You must write : Configure::write('GithubReceiver.filters.xxx.url', \"{$this->payload->repository->url}\");"
 		);
 	}
-	function _isReadyFileExists() {
-		$fullpath = $this->_filepath($this->settings['ready_filename']);
-		return file_exists($fullpath);
-	}
-	function _putPrepareFile() {
-		$fullpath = $this->_filepath($this->settings['prepare_filename']);
+	function _putFile() {
+		$fullpath = $this->_filepath($this->settings['filename']);
 		return file_put_contents($fullpath, $_POST['payload']);
 	}
 	

@@ -106,14 +106,11 @@ class TestGithubReceiverController extends CakeTestCase {
 	}
 	// _filepath()
 	function testInternalFilepath(){
-		$result = CACHE . "github_pull_prepare_test";
+		$result = CACHE . "github_pull_test";
 		$this->GithubReceiverController->filter_name = "test";
-		$this->assertIdentical($this->GithubReceiverController->_filepath("pull_prepare"), $result);
+		$this->assertIdentical($this->GithubReceiverController->_filepath("pull"), $result);
 	}
-	// _isReadyFileExists()
-	function testInternalIsReadyFileExists() {
-	}
-	// _putPrepareFile()
-	function testInternalPutPrepareFile() {
+	// _putFile()
+	function testInternalPutFile() {
 	}
 }
