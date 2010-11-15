@@ -19,10 +19,10 @@ class TestGithubReceiverController extends CakeTestCase {
 	}
 	// _check()
 	function testInternalCheck(){
-		$this->assertIdentical($this->GithubReceiverController->_check(true, "") ,true);
+		$this->assertTrue($this->GithubReceiverController->_check(true, ""));
 	}
 	function testInternalCheckFalse(){
-		$this->assertIdentical($this->GithubReceiverController->_check(false, "") ,false);
+		$this->assertFalse($this->GithubReceiverController->_check(false, ""));
 	}
 	// _setDefaults()
 	function testInternalSetDefaults(){
@@ -64,12 +64,12 @@ class TestGithubReceiverController extends CakeTestCase {
 		$this->assertFalse($this->GithubReceiverController->_checkEnable());
 	}
 	// _loadPayload()
-	function testLoadPayload(){
+	function testInternalLoadPayload(){
 		$_POST['payload'] = json_encode(array('test'=>"test-test"));
 		$this->assertIdentical($this->GithubReceiverController->_loadPayload() ,json_decode($_POST['payload']));
 	}
 	// _checkBranches()
-	function testCheckBranches(){
+	function testInternalCheckBranches(){
 		// empty
 		$_POST['payload'] = json_encode(array('ref' => "refs/heads/master"));
 		$this->GithubReceiverController->_loadPayload();
@@ -79,7 +79,7 @@ class TestGithubReceiverController extends CakeTestCase {
 		list($this->filter_name, $this->filter) = array('filtername', array('branches' => array("refs/heads/master")));
 		$this->assertTrue($this->GithubReceiverController->_checkBranches());
 	}
-	function testCheckBranchesFalse(){
+	function testInternalCheckBranchesFalse(){
 		$_POST['payload'] = json_encode(array('ref' => "refs/heads/master"));
 		$this->GithubReceiverController->_setDefaults();
 		$this->GithubReceiverController->_loadPayload();
@@ -87,7 +87,7 @@ class TestGithubReceiverController extends CakeTestCase {
 		$this->assertFalse($this->GithubReceiverController->_checkBranches());
 	}
 	// _checkUrl()
-	function testCheckUrl(){
+	function testInternalCheckUrl(){
 		// empty
 		$_POST['payload'] = json_encode(array('repository' => array('url' => "http://github.com/monsat/github_receiver")));
 		$this->GithubReceiverController->_loadPayload();
@@ -97,7 +97,7 @@ class TestGithubReceiverController extends CakeTestCase {
 		list($this->GithubReceiverController->filter_name, $this->GithubReceiverController->filter) = array('filtername', array('url' => "http://github.com/monsat/github_receiver"));
 		$this->assertTrue($this->GithubReceiverController->_checkUrl());
 	}
-	function testCheckUrlFalse(){
+	function testInternalCheckUrlFalse(){
 		$_POST['payload'] = json_encode(array('repository' => array('url' => "http://github.com/monsat/github_receiver")));
 		$this->GithubReceiverController->_setDefaults();
 		$this->GithubReceiverController->_loadPayload();
@@ -105,15 +105,15 @@ class TestGithubReceiverController extends CakeTestCase {
 		$this->assertFalse($this->GithubReceiverController->_checkUrl());
 	}
 	// _filepath()
-	function testFilepath(){
+	function testInternalFilepath(){
 		$result = CACHE . "github_pull_prepare_test";
 		$this->GithubReceiverController->filter_name = "test";
 		$this->assertIdentical($this->GithubReceiverController->_filepath("pull_prepare"), $result);
 	}
 	// _isReadyFileExists()
-	function testIsReadyFileExists() {
+	function testInternalIsReadyFileExists() {
 	}
 	// _putPrepareFile()
-	function testPutPrepareFile() {
+	function testInternalPutPrepareFile() {
 	}
 }
