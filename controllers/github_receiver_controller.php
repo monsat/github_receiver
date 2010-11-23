@@ -81,6 +81,10 @@ class GithubReceiverController extends GithubReceiverAppController {
 		$this->setAction('receive');
 	}
 	
+	function check() {
+		debug($this->_setDefaults());
+	}
+	
 	function _isPost() {
 		return $this->is_post || $this->RequestHandler->isPost();
 	}
