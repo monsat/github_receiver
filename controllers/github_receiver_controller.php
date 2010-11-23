@@ -52,8 +52,10 @@ class GithubReceiverController extends GithubReceiverAppController {
 					$this->_putFile();
 				}
 			}
+			$this->_log("GitHubReceiver result : true");
 			return true;
 		}
+		$this->_log("GitHubReceiver result : false");
 		return false;
 	}
 	
@@ -131,9 +133,7 @@ class GithubReceiverController extends GithubReceiverAppController {
 	function _check($expression, $error_message) {
 		$result = true;
 		if (!$expression) {
-			if ($this->settings['is_log']) {
-				$this->log($error_message);
-			}
+			$this->_log($error_message);
 			$this->is_act = $result = false;
 		}
 		return $result;
@@ -144,5 +144,11 @@ class GithubReceiverController extends GithubReceiverAppController {
 		$dir = empty($dir) ? $this->settings['cache_dir'] : $dir;
 		$prefix = empty($prefix) ? $this->settings['prefix'] : $prefix;
 		return $dir . $prefix . $filename . $surfix;
+	}
+	
+	function _log($message) {
+		if ($this->settings['is_log']) {
+			$this->log($message);
+		}
 	}
 }
