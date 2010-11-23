@@ -5,7 +5,6 @@ class TestGithubReceiverController extends CakeTestCase {
 	var $GithubReceiverController;
 	
 	function startCase() {
-		echo '<h2>start</h2>';
 	}
 	
 	function startTest(){
