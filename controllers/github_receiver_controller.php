@@ -2,14 +2,22 @@
 /*
  * If you want to customize settings, you write configs in app/config/bootstrap.php
 	$example = array(
+		'enable' => true,
+		'is_log' => true,
 		'filters' => array(
 			'filtername' => array(
 				'branches' => array("refs/heads/master"), // act if the branches are included
 				'url' => "http://github.com/monsat/github_receiver", // act if the url is same
 			),
 		),
+		'tests' => json_encode(
+			array(
+				'repository' => array('url' => "http://github.com/monsat/github_receiver"),
+				'ref' => "refs/heads/master",
+			)
+		),
 	);
- * Configure::write('GithubReceiver', $example);
+	Configure::write('GithubReceiver', $example);
 */
 class GithubReceiverController extends GithubReceiverAppController {
 	var $uses = null;
@@ -39,6 +47,26 @@ class GithubReceiverController extends GithubReceiverAppController {
 		$this->_loadPayload();
 		// default settings
 		$this->_setDefaults();
+		// Act
+		return $this->_receive();
+	}
+	
+	function test() {
+		$this->post = Configure::read('GithubReceiver.tests');
+		$this->is_post = true;
+		if ($this->_loadPayload() === false){
+			debug("You must write settings in bootstrap.php");
+		}
+		$this->_setDefaults();
+		return $this->_receive();
+	}
+	
+	function check() {
+		debug($this->_setDefaults());
+	}
+	
+	
+	function _receive() {
 		// Act if enable flag is true
 		if ($this->_checkEnable()) {
 			if (empty($this->settings['filters'])) {
@@ -59,31 +87,6 @@ class GithubReceiverController extends GithubReceiverAppController {
 		return false;
 	}
 	
-	function test() {
-		$tmp = array(
-			'enable' => true,
-			'filters' => array(
-				'basic' => array(
-					'branches' => array("refs/heads/master"),
-					'url' => "http://github.com/monsat/github_receiver",
-				),
-			),
-		);
-		Configure::write('GithubReceiver', $tmp);
-		$this->post = json_encode(
-			array(
-				'repository' => array('url' => "http://github.com/monsat/github_receiver"),
-				'ref' => "refs/heads/master",
-			)
-		);
-		
-		$this->is_post = true;
-		$this->setAction('receive');
-	}
-	
-	function check() {
-		debug($this->_setDefaults());
-	}
 	
 	function _isPost() {
 		return $this->is_post || $this->RequestHandler->isPost();
