@@ -1,1 +1,30 @@
 This is a CakePHP's Plugin.
+
+Auto updating system.
+When you push your commits for your github repository,
+Acts "git pull" and so on.
+
+
+You can
+* Merge production files when you push on master branch.
+* Merge test files when you push on develop branch.
+* Merge no files when you push on any another branches.
+
+
+Features
+* You can add on your application as CakePHP's plugin.
+** Or set up alone with CakePHP plain application. (You change core.php and bootstrap.php only)
+* You need to write settings only.
+* You can choose which branches to pull.
+* To git pull by shell scripts. Cron jobs acts them.
+* Multi repositories support.
+
+
+Usage
+# cd your_app/plugins && git clone git@github.com:monsat/github_receiver.git
+# edit configs on your_app/conig/bootstrap.php (see also GitHubReceiverController)
+# edit shell scripts anywhere you like (see also default.pull.sh)
+# edit crontab
+#* ex) */3 * * * * /full/path/to/your_app/plugins/github_receiver/vendors/pull.sh
+
+
