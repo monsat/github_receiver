@@ -52,6 +52,7 @@ class GithubReceiverController extends GithubReceiverAppController {
 	}
 	
 	function test() {
+		$this->autoRender = false;
 		$this->post = Configure::read('GithubReceiver.tests');
 		$this->is_post = true;
 		if ($this->_loadPayload() === false){
@@ -80,7 +81,6 @@ class GithubReceiverController extends GithubReceiverAppController {
 					$this->_putFile();
 				}
 			}
-			$this->_log("GitHubReceiver result : true");
 			return true;
 		}
 		$this->_log("GitHubReceiver result : false");
